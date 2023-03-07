@@ -44,16 +44,22 @@ class ExpenseRepo {
   };
   
   public addRow = async (expense: Expense, sheetTitle: string) => {
+    await this.setup();
+
     this.sheet = await this.getSheet(sheetTitle);
     await this.sheet.addRow({ title: expense.title, value: expense.value, due_date: expense.dueDate, paid: expense.paid });
   };
 
   public getRows = async (sheetTitle: string) => {
+    await this.setup();
+
     this.sheet = await this.getSheet(sheetTitle);
     return await this.sheet.getRows();
   };
 
   public updateRow = async (expense: Expense, index: number, sheetTitle: string) => {
+    await this.setup();
+
     const row = await this.getRow(index, sheetTitle);
 
     row.title = expense.title;
@@ -65,6 +71,8 @@ class ExpenseRepo {
   };
 
   public deleteRow = async (index: number, sheetTitle: string) => {
+    await this.setup();
+
     (await this.getRow(index, sheetTitle)).delete();
   };
 
